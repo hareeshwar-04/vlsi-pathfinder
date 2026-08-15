@@ -1,0 +1,530 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap');
+
+:root {
+  /* LeetCode Authentic Dark Theme Palette */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #262626;
+  --bg-card: #282828;
+  --bg-card-hover: #323232;
+  --bg-input: #383838;
+
+  --text-primary: #eff1f6;
+  --text-secondary: #909090;
+  --text-muted: #737373;
+
+  --border: #383838;
+  --border-hover: #4e4e4e;
+
+  /* LeetCode Brand Colors */
+  --lc-orange: #ffa116;
+  --lc-orange-rgb: 255, 161, 22;
+
+  /* Track Colors (LeetCode Easy Green, Medium Yellow/Orange, Hard Blue) */
+  --cyan: #00b8a3;          /* LeetCode Green (Low Power) */
+  --cyan-rgb: 0, 184, 163;
+  --cyan-dark: #009684;
+
+  --emerald: #ffa116;       /* LeetCode Medium Orange (Memory Design) */
+  --emerald-rgb: 255, 161, 22;
+  --emerald-dark: #e08905;
+
+  --purple: #38bdf8;        /* LeetCode Tag Blue (Device Modelling) */
+  --purple-rgb: 56, 189, 248;
+  --purple-dark: #0284c7;
+
+  --amber: #ffa116;
+  --red: #ef4743;
+  --green: #2cbb5d;
+
+  --radius: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
+}
+
+.mono { font-family: 'Fira Code', 'JetBrains Mono', monospace; }
+.font-display { font-family: 'Space Grotesk', sans-serif; }
+
+/* ===== LAYOUT ===== */
+.container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.page { display: none; min-height: 100vh; padding: 32px 0; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+@keyframes confettiDrop { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+.slide-right { animation: slideInRight 0.25s ease; }
+.slide-left { animation: slideInLeft 0.25s ease; }
+.scale-in { animation: scaleIn 0.25s ease; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px;
+  border: 1px solid transparent; border-radius: var(--radius); font-family: inherit;
+  font-weight: 600; font-size: 0.88rem; cursor: pointer;
+  transition: var(--transition); position: relative;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
+.btn-primary {
+  background: var(--lc-orange);
+  color: #1a1a1a;
+  font-weight: 700;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #ffb84d;
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  background: var(--bg-card); color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover:not(:disabled) { border-color: var(--border-hover); background: var(--bg-card-hover); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid transparent; }
+.btn-ghost:hover { color: var(--text-primary); background: var(--bg-card); }
+.btn-danger { background: var(--red); color: white; }
+.btn-success { background: var(--cyan); color: #1a1a1a; font-weight: 700; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px; transition: var(--transition);
+}
+.card:hover { border-color: var(--border-hover); }
+
+/* ===== NAVBAR (LeetCode Header) ===== */
+.navbar {
+  position: sticky; top: 0; z-index: 100; padding: 12px 0;
+  background: #282828;
+  border-bottom: 1px solid #383838;
+}
+.navbar .container { display: flex; justify-content: space-between; align-items: center; }
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 1.15rem;
+  letter-spacing: -0.4px;
+}
+.nav-brand svg {
+  width: 26px; height: 26px; color: var(--lc-orange);
+  filter: drop-shadow(0 0 6px rgba(var(--lc-orange-rgb), 0.4));
+}
+.nav-brand span {
+  background: linear-gradient(135deg, #ffffff 40%, var(--lc-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+.nav-roll { font-family: 'Fira Code', monospace; color: var(--lc-orange); font-size: 0.82rem; padding: 4px 10px; border: 1px solid rgba(var(--lc-orange-rgb), 0.3); border-radius: 6px; background: rgba(var(--lc-orange-rgb), 0.08); }
+
+/* ===== LANDING PAGE ===== */
+.hero { text-align: center; padding: 40px 0 28px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; color: var(--lc-orange); background: rgba(var(--lc-orange-rgb), 0.1); border: 1px solid rgba(var(--lc-orange-rgb), 0.25); margin-bottom: 14px; font-family: 'Fira Code', monospace; }
+.hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 800; line-height: 1.18; margin-bottom: 12px; letter-spacing: -0.5px; }
+.hero h1 .gradient { color: var(--lc-orange); }
+.hero p { font-size: 0.98rem; color: var(--text-secondary); max-width: 580px; margin: 0 auto 32px; line-height: 1.6; }
+
+.elective-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 36px; }
+.elective-card {
+  padding: 22px; border-radius: var(--radius-lg); cursor: default;
+  border: 1px solid var(--border); background: var(--bg-card);
+  transition: var(--transition); position: relative; overflow: hidden;
+}
+.elective-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.elective-card.cyan::before { background: var(--cyan); }
+.elective-card.emerald::before { background: var(--emerald); }
+.elective-card.purple::before { background: var(--purple); }
+.elective-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-2px); }
+.elective-card .icon-wrap {
+  width: 38px; height: 38px; border-radius: 8px; display: flex;
+  align-items: center; justify-content: center; margin-bottom: 12px;
+}
+.elective-card .icon-wrap svg { width: 20px; height: 20px; }
+.elective-card.cyan .icon-wrap { background: rgba(var(--cyan-rgb),0.12); color: var(--cyan); }
+.elective-card.emerald .icon-wrap { background: rgba(var(--emerald-rgb),0.12); color: var(--emerald); }
+.elective-card.purple .icon-wrap { background: rgba(var(--purple-rgb),0.12); color: var(--purple); }
+.elective-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.2px; }
+.elective-card .code { font-family: 'Fira Code', monospace; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 8px; }
+.elective-card p { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* Auth Section */
+.auth-section {
+  max-width: 420px; margin: 0 auto; padding: 28px; border-radius: var(--radius-xl);
+  background: var(--bg-card); border: 1px solid var(--border); text-align: center;
+}
+.auth-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+.auth-section .subtitle { color: var(--text-secondary); font-size: 0.86rem; margin-bottom: 18px; }
+
+.input-group { position: relative; margin-bottom: 14px; text-align: left; }
+.input-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.input-group input {
+  width: 100%; padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-primary); font-family: 'Fira Code', monospace;
+  font-size: 0.95rem; transition: var(--transition); outline: none;
+}
+.input-group input:focus { border-color: var(--lc-orange); }
+.input-group input.error { border-color: var(--red); }
+.input-group input.valid { border-color: var(--green); }
+.error-msg { color: var(--red); font-size: 0.8rem; margin-top: 6px; display: none; align-items: center; gap: 4px; }
+.error-msg.show { display: flex; }
+.valid-msg { color: var(--green); font-size: 0.8rem; margin-top: 6px; display: none; align-items: center; gap: 4px; }
+.valid-msg.show { display: flex; }
+.retake-warning { margin-top: 10px; padding: 8px 12px; border-radius: var(--radius); background: rgba(255, 161, 22, 0.1); border: 1px solid rgba(255, 161, 22, 0.25); color: var(--lc-orange); font-size: 0.8rem; display: none; }
+.retake-warning.show { display: block; }
+
+/* ===== QUIZ PAGE (LeetCode Problem View Style) ===== */
+#page-quiz .container { max-width: 800px; }
+
+.quiz-header { margin-bottom: 20px; }
+.progress-wrapper {
+  background: var(--bg-card);
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+.progress-bar-bg { width: 100%; height: 6px; background: #383838; border-radius: 3px; overflow: hidden; }
+.progress-bar-fill {
+  height: 100%;
+  background: var(--lc-orange);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+.progress-text { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-secondary); margin-top: 6px; }
+.progress-text span { font-family: 'Fira Code', monospace; }
+.progress-text #progress-percent { color: var(--lc-orange); font-weight: 700; }
+
+.question-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.question-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--lc-orange);
+  background: rgba(var(--lc-orange-rgb), 0.1);
+  border: 1px solid rgba(var(--lc-orange-rgb), 0.25);
+  margin-bottom: 12px;
+}
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lc-orange);
+}
+
+.question-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.question-scenario {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: #202020;
+  border-radius: var(--radius);
+  border-left: 3px solid var(--lc-orange);
+  border-top: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.options-header {
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.options-grid { display: flex; flex-direction: column; gap: 10px; }
+.option-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #222222;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+.option-card:hover {
+  border-color: var(--border-hover);
+  background: #2a2a2a;
+}
+
+.option-key-badge {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: #1a1a1a;
+  transition: var(--transition);
+}
+
+.option-content { flex: 1; }
+.option-text {
+  font-size: 0.89rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.option-card:hover .option-text { color: var(--text-primary); }
+
+.option-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: var(--transition);
+  background: #1a1a1a;
+}
+
+/* LeetCode Selected Option Styles */
+.option-card.selected-cyan {
+  border-color: var(--cyan);
+  background: rgba(var(--cyan-rgb), 0.1);
+}
+.option-card.selected-cyan .option-key-badge {
+  background: var(--cyan);
+  color: #1a1a1a;
+  border-color: var(--cyan);
+}
+.option-card.selected-cyan .option-check {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #1a1a1a;
+}
+
+.option-card.selected-emerald {
+  border-color: var(--emerald);
+  background: rgba(var(--emerald-rgb), 0.1);
+}
+.option-card.selected-emerald .option-key-badge {
+  background: var(--emerald);
+  color: #1a1a1a;
+  border-color: var(--emerald);
+}
+.option-card.selected-emerald .option-check {
+  background: var(--emerald);
+  border-color: var(--emerald);
+  color: #1a1a1a;
+}
+
+.option-card.selected-purple {
+  border-color: var(--purple);
+  background: rgba(var(--purple-rgb), 0.1);
+}
+.option-card.selected-purple .option-key-badge {
+  background: var(--purple);
+  color: #1a1a1a;
+  border-color: var(--purple);
+}
+.option-card.selected-purple .option-check {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: #1a1a1a;
+}
+
+.option-card[class*="selected-"] .option-text {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+/* ===== RESULTS PAGE ===== */
+.results-header { text-align: center; margin-bottom: 32px; }
+.results-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.4px; }
+.results-header p { color: var(--text-secondary); }
+
+.rankings { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.rank-card {
+  display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+  border-radius: var(--radius-lg); border: 1px solid var(--border);
+  background: var(--bg-card); transition: var(--transition);
+}
+.rank-card.rank-1 { border-color: var(--lc-orange); background: rgba(255, 161, 22, 0.05); }
+.rank-badge {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1rem; font-family: 'Fira Code', monospace;
+}
+.rank-1 .rank-badge { background: var(--lc-orange); color: #1a1a1a; }
+.rank-2 .rank-badge { background: #555555; color: white; }
+.rank-3 .rank-badge { background: #3c3c3c; color: white; }
+.rank-info { flex: 1; }
+.rank-info h3 { font-size: 1rem; margin-bottom: 2px; }
+.rank-info .rank-code { font-family: 'Fira Code', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.rank-score { text-align: right; font-family: 'Fira Code', monospace; }
+.rank-score .percent { font-size: 1.4rem; font-weight: 800; }
+.rank-score .fraction { font-size: 0.8rem; color: var(--text-muted); }
+.rank-score .percent.cyan { color: var(--cyan); }
+.rank-score .percent.emerald { color: var(--emerald); }
+.rank-score .percent.purple { color: var(--purple); }
+
+.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.chart-card { padding: 18px; text-align: center; }
+.chart-card h3 { margin-bottom: 12px; font-size: 0.9rem; }
+.chart-card canvas { max-height: 220px; }
+
+.result-summary { padding: 20px; margin-bottom: 24px; }
+.result-summary h3 { margin-bottom: 12px; font-size: 1rem; }
+.summary-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.summary-pill { padding: 4px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 500; }
+
+.submit-section { text-align: center; padding: 24px; }
+.submit-section .btn { font-size: 0.95rem; padding: 12px 32px; }
+
+/* ===== ADMIN PAGE ===== */
+.admin-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+.admin-modal {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  padding: 32px; max-width: 380px; width: 90%; text-align: center; animation: scaleIn 0.2s ease;
+}
+.admin-modal h2 { margin-bottom: 4px; font-size: 1.15rem; }
+.admin-modal .subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 18px; }
+.admin-modal .error-msg { justify-content: center; margin-bottom: 12px; }
+
+.admin-content { display: none; }
+.admin-content.active { display: block; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { padding: 18px; text-align: center; }
+.stat-card .stat-value { font-size: 1.7rem; font-weight: 800; font-family: 'Fira Code', monospace; margin-bottom: 2px; }
+.stat-card .stat-label { font-size: 0.8rem; color: var(--text-secondary); }
+.stat-card.cyan .stat-value { color: var(--cyan); }
+.stat-card.emerald .stat-value { color: var(--emerald); }
+.stat-card.purple .stat-value { color: var(--purple); }
+
+.admin-chart-section { margin-bottom: 24px; }
+.admin-chart-section .card { padding: 18px; }
+.admin-chart-section h3 { margin-bottom: 12px; }
+.admin-chart-section canvas { max-height: 260px; }
+
+.table-controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.search-input {
+  padding: 8px 12px; background: var(--bg-input); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-primary); font-family: inherit;
+  font-size: 0.85rem; outline: none; transition: var(--transition); min-width: 200px;
+}
+.search-input:focus { border-color: var(--lc-orange); }
+
+.table-wrapper { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.data-table th { padding: 10px 12px; text-align: left; background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.data-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.data-table tbody tr { transition: var(--transition); }
+.data-table tbody tr:hover { background: var(--bg-card-hover); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.expand-btn { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 0.72rem; transition: var(--transition); }
+.expand-btn:hover { border-color: var(--lc-orange); color: var(--lc-orange); }
+.answers-row { display: none; }
+.answers-row.show { display: table-row; }
+.answers-row td { padding: 12px; background: rgba(255, 161, 22, 0.03); }
+.answers-detail { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; }
+.answer-chip { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-family: 'Fira Code', monospace; background: var(--bg-card); border: 1px solid var(--border); }
+
+.empty-state { text-align: center; padding: 40px 16px; color: var(--text-muted); }
+.empty-state svg { width: 36px; height: 36px; margin-bottom: 10px; opacity: 0.4; }
+
+/* ===== CONFETTI ===== */
+.confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 300; overflow: hidden; }
+.confetti-piece { position: absolute; top: -10px; width: 8px; height: 8px; border-radius: 2px; animation: confettiDrop 3s ease-in forwards; }
+
+/* ===== TOAST ===== */
+.toast { position: fixed; bottom: 20px; right: 20px; padding: 10px 18px; border-radius: var(--radius); font-size: 0.85rem; font-weight: 500; z-index: 400; animation: slideInRight 0.25s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+.toast.success { background: var(--lc-orange); color: #1a1a1a; font-weight: 700; }
+.toast.error { background: var(--red); color: white; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: 0.9rem; }
+  .elective-cards { grid-template-columns: 1fr; }
+  .container { padding: 0 14px; }
+  .page { padding: 18px 0; }
+  .rank-card { flex-direction: column; text-align: center; gap: 8px; }
+  .rank-score { text-align: center; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .table-controls { flex-direction: column; align-items: stretch; }
+  .search-input { min-width: unset; }
+  .quiz-nav { flex-wrap: wrap; }
+  .admin-modal { padding: 20px 14px; }
+  .question-title { font-size: 1.1rem; }
+  .option-card { padding: 12px; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .answers-detail { grid-template-columns: repeat(3, 1fr); }
+  .hero { padding: 20px 0 16px; }
+  .auth-section { padding: 18px 12px; }
+}
