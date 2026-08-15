@@ -495,6 +495,13 @@ function initAdmin() {
   $('#admin-back-btn').addEventListener('click', () => { window.location.hash = '#/'; });
   $('#admin-logout-btn').addEventListener('click', () => { state.adminAuth = false; window.location.hash = '#/'; });
   $('#export-csv-btn').addEventListener('click', exportCSV);
+  $('#reset-db-btn')?.addEventListener('click', () => {
+    if (confirm('⚠️ Are you sure you want to reset the database? This will permanently delete all student quiz submissions from local storage.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      renderAdminDashboard();
+      showToast('Database reset successfully. All submissions cleared.', 'success');
+    }
+  });
   $('#search-input').addEventListener('input', renderAdminTable);
   $('#course-filter').addEventListener('change', renderAdminTable);
   $('#sort-filter').addEventListener('change', renderAdminTable);
