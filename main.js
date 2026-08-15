@@ -103,6 +103,44 @@ function saveSubmission(data) {
   }
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(subs));
+
+  // Async sync to Cloudflare Pages Functions API
+  try {
+    fetch('/api/submissions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(() => {});
+  } catch (e) {}
+}
+
+async function syncCloudSubmissions() {
+  try {
+    const res = await fetch('/api/submissions');
+    if (!res.ok) return;
+    const cloudSubs = await res.json();
+    if (cloudSubs && typeof cloudSubs === 'object' && Object.keys(cloudSubs).length > 0) {
+      const localSubs = getSubmissions();
+      let updated = false;
+      Object.entries(cloudSubs).forEach(([roll, cloudItem]) => {
+        if (!localSubs[roll]) {
+          localSubs[roll] = cloudItem;
+          updated = true;
+        } else {
+          const localHist = localSubs[roll].history || [localSubs[roll].latest || localSubs[roll]];
+          const cloudHist = cloudItem.history || [cloudItem.latest || cloudItem];
+          if (cloudHist.length > localHist.length) {
+            localSubs[roll] = cloudItem;
+            updated = true;
+          }
+        }
+      });
+      if (updated) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(localSubs));
+        renderAdminDashboard();
+      }
+    }
+  } catch (e) {}
 }
 
 function getLatestSubmission(roll) {
@@ -496,8 +534,9 @@ function initAdmin() {
   $('#admin-logout-btn').addEventListener('click', () => { state.adminAuth = false; window.location.hash = '#/'; });
   $('#export-csv-btn').addEventListener('click', exportCSV);
   $('#reset-db-btn')?.addEventListener('click', () => {
-    if (confirm('⚠️ Are you sure you want to reset the database? This will permanently delete all student quiz submissions from local storage.')) {
+    if (confirm('⚠️ Are you sure you want to reset the database? This will permanently delete all student quiz submissions.')) {
       localStorage.removeItem(STORAGE_KEY);
+      fetch('/api/submissions', { method: 'DELETE' }).catch(() => {});
       renderAdminDashboard();
       showToast('Database reset successfully. All submissions cleared.', 'success');
     }
@@ -523,6 +562,7 @@ function tryAdminLogin() {
 }
 
 function renderAdminDashboard() {
+  syncCloudSubmissions();
   const subs = getSubmissions();
   const rawList = Object.values(subs);
   const studentRecords = rawList.map(item => {
